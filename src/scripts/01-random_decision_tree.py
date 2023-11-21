@@ -1,6 +1,13 @@
 import copy
 import random
-random.seed(0)
+import argparse
+
+args = argparse.ArgumentParser()
+args.add_argument("--seed", type=int, default=0)
+args.add_argument("--nodes", type=int, default=5)
+args = args.parse_args()
+
+random.seed(args.seed)
 
 
 class Feature():
@@ -45,7 +52,7 @@ def ok_features_i(features, parent_choices):
     ]
 
 def generate_tree(allowed_nodes, features, parent_choices=[]):
-    if allowed_nodes == 1:
+    if allowed_nodes <= 2:
         return Node(features[random.choice(ok_features_i(features, parent_choices))])
     allowed_nodes -= 1
 
@@ -53,7 +60,7 @@ def generate_tree(allowed_nodes, features, parent_choices=[]):
     # make sure that prerequisites are fulfilled
     feature = features.pop(random.choice(ok_features_i(features, parent_choices)))
 
-    nodes_left = random.randint(0, allowed_nodes)
+    nodes_left = random.randint(1, allowed_nodes-1)
     child_left = generate_tree(nodes_left, features, parent_choices+[feature.name + " = " + feature.options[0]])
     child_right = generate_tree(allowed_nodes - nodes_left, features, parent_choices+[feature.name + " = " + feature.options[1]])
     node = Node(feature)
@@ -62,11 +69,8 @@ def generate_tree(allowed_nodes, features, parent_choices=[]):
     return node
 
 
-fout = open("computed/trees/random1.out", "w")
+fout = open(f"computed/trees/random_s{args.seed}_n{args.nodes}.out", "w")
 fout.write('#')
-
-random.seed(0)
-
 
 def print_tree(node, prefix="", offset=0):
     fout.write(
@@ -111,5 +115,6 @@ def print_tree(node, prefix="", offset=0):
         ")" + ("," if offset != 0 else "") + "\n"
     )
 
+print_tree(generate_tree(args.nodes, FEATURES))
 
-print_tree(generate_tree(5, FEATURES))
+fout.write("#pagebreak()\n")
