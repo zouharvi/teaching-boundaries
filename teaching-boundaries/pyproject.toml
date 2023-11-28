@@ -1,0 +1,7 @@
+[project]
+name = "teaching-boundaries"
+version = "0.0.0"
+
+dependencies = [
+    "scikit-learn >= 1.2",
+]
