@@ -52,6 +52,39 @@ class Node():
             else:
                 return self.right(x)
 
+    def print_typst(self):
+        print('#', end="")
+        self._print_typst()
+
+    def _print_typst(self, prefix="", offset=0):
+        if self.decision is not None:
+            print(
+                "  " * (offset + 1) +
+                "\"" + prefix + str(self.decision) + "\","
+            )
+            return
+        else:
+            print(
+                "  " * offset +
+                "tree(\"" + prefix + self.feature.format_question() + "\","
+            )
+            options = self.feature.format_options()
+
+            self.left._print_typst(
+                prefix=options[0] + "\\n",
+                offset=offset + 1
+            )
+
+            self.right._print_typst(
+                prefix=options[1] + "\\n",
+                offset=offset + 1,
+            )
+
+        print(
+            "  " * offset +
+            ")" + ("," if offset != 0 else "")
+        )
+
 
 def ok_features_i(features, parent_choices):
     return [
@@ -76,9 +109,13 @@ def generate_tree(allowed_nodes, features=FEATURES, parent_choices=[]):
 
     nodes_left = random.randint(1, allowed_nodes - 1)
     child_left = generate_tree(
-        nodes_left, features, parent_choices + [feature.name + " = " + feature.options[0]])
-    child_right = generate_tree(allowed_nodes - nodes_left, features,
-                                parent_choices + [feature.name + " = " + feature.options[1]])
+        nodes_left, features, parent_choices +
+        [feature.name + " = " + feature.options[0]]
+    )
+    child_right = generate_tree(
+        allowed_nodes - nodes_left, features,
+        parent_choices + [feature.name + " = " + feature.options[1]]
+    )
     node = Node(feature)
     node.left = child_left
     node.right = child_right
