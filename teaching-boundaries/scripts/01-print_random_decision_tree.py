@@ -1,6 +1,6 @@
 import random
 import argparse
-from decision_tree_generator import generate_tree
+import decision_tree
 
 args = argparse.ArgumentParser()
 args.add_argument("--seed", type=int, default=0)
@@ -9,4 +9,4 @@ args = args.parse_args()
 
 random.seed(args.seed)
 
-generate_tree(args.nodes).print_typst()
+decision_tree.Tree.generate_random(args.nodes).print_typst()
