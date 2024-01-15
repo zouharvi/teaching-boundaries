@@ -1,0 +1,74 @@
+* {
+    font-family: Roboto, Arial, Helvetica, sans-serif;
+}
+
+#main_text_area {
+    vertical-align: top;
+    margin-top: 30px;
+    border: 2px solid black;
+    padding: 20px;
+    background-color: #fff;
+    display: inline-block;
+
+    width: 1150px;
+    height: 600px;
+    font-size: 1.1em;
+    text-align: justify;
+}
+
+.paragraph_blurbox {
+    /* 100% actually spans the whole main text area */
+    width: calc(100% - 30px);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    position: absolute;
+}
+
+a {
+    color: black;
+    font-weight: bold;
+}
+
+#button_next {
+    width: 145px;
+    height: 40px;
+    display: inline-block;
+    vertical-align: top;
+}
+
+body {
+    text-align: center;
+    margin-bottom: 20px;
+    background-color: #dbd;
+}
+
+/* button default */
+input[type="button"] {
+    background-color: #d7dadd;
+    border: none;
+    border-radius: 6px;
+    box-sizing: border-box;
+    color: #24292E;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 900;
+    line-height: 20px;
+    padding: 6px 16px;
+    vertical-align: middle;
+    cursor: pointer;
+    
+}
+
+input[type="button"]:hover:not(:disabled) {
+    background-color: #c9cacc;
+}
+
+input[type="button"]:active {
+    background-color: #d9dbdf;
+}
+
+input[type="button"]:disabled {
+    background-color: #b7b9bd;
+    color: #4e535a;
+    cursor: not-allowed;
+}
