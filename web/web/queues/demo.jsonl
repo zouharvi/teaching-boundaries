@@ -1,0 +1,4 @@
+{"question": "Question 1", "answer": "answer 1", "mode": "base", "tags": ["Long question", "Low confidence"], "reveal": true, "correct": true}
+{"question": "Question 2", "answer": "answer 2", "mode": "base_tags", "tags": ["Long answer", "High confidence"], "reveal": true, "correct": false}
+{"question": "Question 3", "answer": "answer 3", "mode": "blur_tags", "tags": ["History topic"], "reveal": false, "correct": false}
+{"question": "Question 4", "answer": "answer 4", "mode": "base", "tags": ["Long", "Low confidence"], "reveal": false, "correct": false}

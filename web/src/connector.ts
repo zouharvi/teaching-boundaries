@@ -18,18 +18,22 @@ export async function load_data(): Promise<any> {
     return result
 }
 
-export async function log_data(): Promise<any> {
+export async function log_data(response: boolean): Promise<any> {
     // TODO: revise
     let data = {
-        "phase": globalThis.phase -1,
-        "phase_start": globalThis.phase_start,
+        "data_i": globalThis.data_i,
+        "time": {
+            "start": globalThis.time_start,
+            "end": Date.now(),
+        },
         "uid": globalThis.uid,
-        "prolific_pid": globalThis.prolific_pid,
-        "session_id": globalThis.session_id,
-        "study_id": globalThis.study_id,
-        "aid": globalThis.data_now["id"],
-        ...globalThis.responses,
-        ...globalThis.responses_system,
+        "user": {
+            "prolific_pid": globalThis.prolific_pid,
+            "session_id": globalThis.session_id,
+            "study_id": globalThis.study_id,
+        },
+        "response": response,
+        "question": globalThis.data_now,
     }
 
     console.log(data)

@@ -6,32 +6,56 @@ let main_text_area = $("#main_text_area")
 
 export async function setup_intro_information() {
     main_text_area.html(await get_html("instructions.html"))
-    // hack for event loop
-    await 10
-    $("#button_start").on("click", setup_main_questions)
+    await timer(10)
+    $("#button_start").on("click", setup_main_question)
 }
 
-async function setup_main_questions() {
-    console.log("Main questions", globalThis.data_now)
-    return
-    let article = globalThis.data_now["article"]
+function next_main_question() {
+    globalThis.data_i += 1;
+    if (globalThis.data_i >= globalThis.data.length) {
+        load_thankyou()
+    } else {
+        globalThis.data_now = globalThis.data[globalThis.data_i]
+        setup_main_question()
+    }
+}
 
-    let frame_obj = $(`<div id="article_frame">${article}</div>`)
-    let question_obj = $('<div id="main_question_panel"></div>')
-    main_text_area.html("")
-    main_text_area.append(frame_obj)
-    main_text_area.append(question_obj)
-    main_text_area.scrollTop(0)
+function tag_factory(tag) {
+    return `<span class="tag_span">${tag}</span>`
+}
 
-    // hack for JS event loop
+async function setup_main_question() {
+    globalThis.time_start = Date.now()
+
+    let html = await get_html("main_task.html")
+    html = html.replace("{{QUESTION}}", globalThis.data_now["question"])
+    html = html.replace("{{ANSWER}}", globalThis.data_now["answer"])
+
+    if (globalThis.data_now["mode"].includes("tags")) {
+        html = html.replace("{{TAGS}}", globalThis.data_now["tags"].map((x) => tag_factory(x)).join(" "))
+    } else {
+        html = html.replace("{{TAGS}}", "")
+    }
+
+    if (globalThis.data_now["mode"].includes("blur")) {
+        html = html.replace("{{POTENTIAL_BLURBOX}}", "<div class='paragraph_blurbox'></div>")
+    } else {
+        html = html.replace("{{POTENTIAL_BLURBOX}}", "")
+    }
+    main_text_area.html(html)
     await timer(10)
+
+    $("#button_yes").on("click", () => {
+        log_data(true)
+        next_main_question()
+    })
+    $("#button_no").on("click", () => {
+        log_data(false)
+        next_main_question()
+    })
 }
 
 async function load_thankyou() {
-    // log last phase
-    globalThis.phase += 1;
-    log_data()
-
     main_text_area.html("Please wait 3s for data synchronization to finish.")
     await timer(1000)
     main_text_area.html("Please wait 2s for data synchronization to finish.")

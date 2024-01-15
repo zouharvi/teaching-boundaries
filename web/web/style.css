@@ -10,18 +10,21 @@
     background-color: #fff;
     display: inline-block;
 
-    width: 1150px;
+    width: 1000px;
     height: 600px;
     font-size: 1.1em;
     text-align: justify;
+    position: relative;
 }
 
 .paragraph_blurbox {
-    /* 100% actually spans the whole main text area */
-    width: calc(100% - 30px);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    width: calc(100% + 10px);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
     position: absolute;
+    top: 0;
+    height: 300px;
+    margin-left: -10px;
 }
 
 a {
@@ -39,7 +42,17 @@ a {
 body {
     text-align: center;
     margin-bottom: 20px;
-    background-color: #dbd;
+    background-color: #bdbdd0;
+}
+
+.tag_span {
+    background-color: #dddfc9;
+    /* border: 2px solid #c9ccac; */
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    padding: 6px;
+    user-select: none;
 }
 
 /* button default */
@@ -60,15 +73,23 @@ input[type="button"] {
 }
 
 input[type="button"]:hover:not(:disabled) {
-    background-color: #c9cacc;
+    background-color: #ccc;
 }
 
 input[type="button"]:active {
-    background-color: #d9dbdf;
+    background-color: #ddd;
 }
 
 input[type="button"]:disabled {
-    background-color: #b7b9bd;
+    background-color: #bbb;
     color: #4e535a;
     cursor: not-allowed;
+}
+
+#button_yes {
+    background-color: #cec;
+}
+
+#button_no {
+    background-color: #ecc;
 }

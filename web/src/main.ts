@@ -5,12 +5,10 @@ import { setup_intro_information } from "./worker_website"
 import { range } from "./utils";
 
 globalThis.data = null
+globalThis.data_i = 0
 
 const urlParams = new URLSearchParams(window.location.search);
 globalThis.uid = urlParams.get('uid');
-// take phase from GET if available else use 0 as default
-globalThis.phase = parseInt(urlParams.get("phase")) || 0;
-globalThis.phaseOverride = parseInt(urlParams.get("phase")) || -1;
 
 
 function prolific_rewrite_uid(uid) {
