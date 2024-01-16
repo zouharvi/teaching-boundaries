@@ -1,34 +1,24 @@
+import json
 import random
-import decision_tree
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.metrics import accuracy_score
-
+from analysis import decision_tree
+from analysis import user_models
 random.seed(0)
 tree = decision_tree.Tree.generate_random(8)
-
 random_data = random.Random(0)
+
+# load dataset and add manually confidence
 data_x = [
-    random_data.choices([0, 1], k=len(decision_tree.FEATURES))
-    for _ in range(10_000)
+    json.loads(x) for x in open("computed/dataset_base.jsonl", "r")
 ]
+for line in data_x:
+    line["configuration"]["confidence"] = random_data.choice(
+        ["low AI confidence", "high AI confidence"]
+    )
+# add tree prediction
 data_y = [
-    tree(x) for x in data_x
+    tree(x["configuration"]) for x in data_x
 ]
 data_xy = list(zip(data_x, data_y))
-
 tree.print_typst()
 
-best_score = 0
-for seed in range(100):
-    data_subset = random.Random(seed).sample(data_xy, k=10)
-    model = DecisionTreeClassifier()
-    model.fit(
-        [x for x, y in data_subset],
-        [y for x, y in data_subset],
-    )
-    data_y_pred = model.predict(data_x)
-    score = accuracy_score(data_y, data_y_pred)
-    print(f"{score:.2%}")
-    best_score = max(best_score, score)
-
-print(f"Best: {best_score:.2%}")
+best_subset = user_models.decision_tree_simple(data_xy, k=10)

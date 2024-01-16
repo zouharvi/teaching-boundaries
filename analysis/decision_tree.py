@@ -1,40 +1,31 @@
 import copy
 import random
 
-
 class Feature():
-    i = None
+    decision = None
+    option = None
 
-    def __init__(self, name, options, prerequisites=set()):
+    def __init__(self, name, options):
         self.name = name
         self.options = options
-        self.prerequisites = prerequisites
 
     def format_question(self):
-        return self.name.split("_")[0] + "?"
+        return self.name
 
     def format_options(self):
-        if any("%" in x for x in self.options):
-            return [self.name.split("_")[0] + x for x in self.options]
-        else:
-            return [self.name + "=" + x for x in self.options]
-
+        return ["=" + self.option, "≠" + self.option]
 
 FEATURES = [
-    Feature(name="domain", options=["math", "history"]),
-    Feature(name="question length", options=["short", "long"]),
-    Feature(name="answer length", options=["short", "long"]),
-    Feature(name="confidence_1", options=["≥80%", "<80%"]),
-    Feature(
-        name="confidence_2",
-        options=["≥40%", "<40%"],
-        prerequisites={"confidence_1 = <80%"}
-    ),
+    Feature(name="domain", options=["history", "biology"]),
+    Feature(name="length_question", options=["short", "long"]),
+    Feature(name="length_answer", options=["short", "long"]),
+    Feature(name="entity", options=["person", "number", "explanation"]),
+    Feature(name="confidence", options=["low AI confidence", "high AI confidence"]),
 ]
 
-for feature_i, feature in enumerate(FEATURES):
-    feature.i = feature_i
-
+FEATURES_OPTIONS = {}
+for feature in FEATURES:
+    FEATURES_OPTIONS[feature.name] = feature.options
 
 class Tree():
     def __init__(self, feature, decision=None):
@@ -43,21 +34,23 @@ class Tree():
         self.right = None
         self.decision = decision
 
-    def __call__(self, x):
+    def __call__(self, x: dict):
         if self.decision is not None:
             return self.decision
         else:
-            if x[self.feature.i]:
-                return self.right(x)
-            else:
+            # if it equals then it goes left
+            if x[self.feature.name] == self.feature.option:
                 return self.left(x)
+            else:
+                return self.right(x)
 
     @staticmethod
-    def generate_random(allowed_nodes, features=FEATURES, parent_choices=[]):
+    def generate_random(allowed_nodes, features=FEATURES):
         features = copy.deepcopy(features)
-        # make sure that prerequisites are fulfilled
-        feature = features.pop(random.choice(
-            _ok_features_i(features, parent_choices)))
+        feature = features.pop(random.choice(range(len(features))))
+
+        # if it's equal it goes left, if it's not it goes right
+        feature.option = random.choice(feature.options)
 
         if allowed_nodes <= 2:
             node = Tree(feature)
@@ -69,12 +62,10 @@ class Tree():
 
         nodes_left = random.randint(1, allowed_nodes - 1)
         child_left = Tree.generate_random(
-            nodes_left, features, parent_choices +
-            [feature.name + " = " + feature.options[0]]
+            nodes_left, features
         )
         child_right = Tree.generate_random(
-            allowed_nodes - nodes_left, features,
-            parent_choices + [feature.name + " = " + feature.options[1]]
+            allowed_nodes - nodes_left, features
         )
         node = Tree(feature)
         node.left = child_left
@@ -114,11 +105,4 @@ class Tree():
             "  " * offset +
             ")" + ("," if offset != 0 else "")
         )
-
-
-def _ok_features_i(features, parent_choices):
-    return [
-        feature_i for feature_i, feature in enumerate(features)
-        if all(x in parent_choices for x in features[feature_i].prerequisites)
-    ]
 
