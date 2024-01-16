@@ -6,6 +6,7 @@ import { range } from "./utils";
 
 globalThis.data = null
 globalThis.data_i = 0
+globalThis.score = 0
 
 const urlParams = new URLSearchParams(window.location.search);
 globalThis.uid = urlParams.get('uid');

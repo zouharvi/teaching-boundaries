@@ -55,6 +55,20 @@ body {
     user-select: none;
 }
 
+.span_correct {
+    display: inline-block;
+    padding: 2px;
+    border-radius: 3px;
+    background-color: #353;
+}
+
+.span_incorrect {
+    display: inline-block;
+    padding: 2px;
+    border-radius: 3px;
+    background-color: #533;
+}
+
 /* button default */
 input[type="button"] {
     background-color: #d7dadd;

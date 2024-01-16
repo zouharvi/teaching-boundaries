@@ -20,6 +20,40 @@ function next_main_question() {
     }
 }
 
+async function show_evaluation(response: Boolean) {
+    let correct = globalThis.data_now["correct"]
+    let html = await get_html("modal_response.html")
+    let text_correct = "<span class='span_correct'>correct</span>"
+    let text_incorrect = "<span class='span_incorrect'>incorrect</span>"
+    let message = ""
+    if (!globalThis.data_now["reveal"]) {
+        message = `You answered that the AI was ${response ? "correct" : "incorrect"}.`
+    } else {
+        // TODO: color highlight
+        if (response == correct) {
+            message = `You answered that the AI was ${response ? text_correct : text_incorrect} and the AI was in fact ${correct ? text_correct : text_incorrect}`
+        } else {
+            message = `You answered that the AI was ${response ? text_correct : text_incorrect} but the AI was in fact ${correct ? text_correct : text_incorrect}`
+        }
+    }
+    html = html.replace("{{MODAL_MESSAGE}}", message)
+    main_text_area.append(html)
+
+    if (correct == response) {
+        globalThis.score += 1;
+    }
+    if (globalThis.data_now["reveal"]) {
+        $("#text_score").text(`Score: ${globalThis.score}`)
+    }
+
+    await timer(10)
+    $("#button_ok").on("click", () => {
+        // should not be necessary because the whole html in the box gets overriden
+        $("#modal_dialog").remove()
+        next_main_question()
+    })
+}
+
 function tag_factory(tag) {
     return `<span class="tag_span">${tag}</span>`
 }
@@ -47,11 +81,11 @@ async function setup_main_question() {
 
     $("#button_yes").on("click", () => {
         log_data(true)
-        next_main_question()
+        show_evaluation(true)
     })
     $("#button_no").on("click", () => {
         log_data(false)
-        next_main_question()
+        show_evaluation(false)
     })
 }
 
