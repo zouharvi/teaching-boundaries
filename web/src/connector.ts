@@ -19,7 +19,6 @@ export async function load_data(): Promise<any> {
 }
 
 export async function log_data(response: boolean): Promise<any> {
-    // TODO: revise
     let data = {
         "data_i": globalThis.data_i,
         "time": {

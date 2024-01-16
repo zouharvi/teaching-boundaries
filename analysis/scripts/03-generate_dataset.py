@@ -1,11 +1,14 @@
 import os
 import json
 import random
-from analysis import decision_tree
-from analysis import user_models
-from analysis import utils
+from analysis import decision_tree, utils, user_models
+import argparse
 
-tree = decision_tree.Tree.generate_random(8)
+args = argparse.ArgumentParser()
+args.add_argument("-m", "--model", default="tree_simple")
+args = args.parse_args()
+
+tree = decision_tree.Tree.generate_random(6)
 tree.print_typst()
 
 random_data = random.Random(0)
@@ -31,7 +34,7 @@ training_questions_pool = [
     if x["question"] not in test_questions_set
 ]
 
-training_questions = user_models.logistic_regression_simple(training_questions_pool, k=10)
+training_questions = user_models.MODELS[args.model](training_questions_pool, k=10)
 
 # output queue
 os.makedirs("computed/queues", exist_ok=True)
@@ -55,5 +58,5 @@ for question, correct in test_questions:
         "reveal": False,
         "correct": correct,
     })
-with open("computed/queues/queue_decision_tree_10.jsonl", "w") as f:
+with open(f"computed/queues/queue_{args.model}_10.jsonl", "w") as f:
     f.write("\n".join(json.dumps(x, ensure_ascii=False) for x in queue))
