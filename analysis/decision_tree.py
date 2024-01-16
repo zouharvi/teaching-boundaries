@@ -45,9 +45,9 @@ class Tree():
                 return self.right(x)
 
     @staticmethod
-    def generate_random(allowed_nodes, features=FEATURES):
+    def generate_random(allowed_nodes, features=FEATURES, random_state=random.Random()):
         features = copy.deepcopy(features)
-        feature = features.pop(random.choice(range(len(features))))
+        feature = features.pop(random_state.choice(range(len(features))))
 
         # if it's equal it goes left, if it's not it goes right
         feature.option = random.choice(feature.options)
@@ -62,10 +62,10 @@ class Tree():
 
         nodes_left = random.randint(1, allowed_nodes - 1)
         child_left = Tree.generate_random(
-            nodes_left, features
+            nodes_left, features, random_state
         )
         child_right = Tree.generate_random(
-            allowed_nodes - nodes_left, features
+            allowed_nodes - nodes_left, features, random_state
         )
         node = Tree(feature)
         node.left = child_left

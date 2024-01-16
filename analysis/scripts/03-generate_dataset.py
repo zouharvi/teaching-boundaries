@@ -1,9 +1,13 @@
+import os
 import json
 import random
 from analysis import decision_tree
 from analysis import user_models
-random.seed(0)
+from analysis import utils
+
 tree = decision_tree.Tree.generate_random(8)
+tree.print_typst()
+
 random_data = random.Random(0)
 
 # load dataset and add manually confidence
@@ -19,6 +23,37 @@ data_y = [
     tree(x["configuration"]) for x in data_x
 ]
 data_xy = list(zip(data_x, data_y))
-tree.print_typst()
+# select test questions beforehand
+test_questions = random_data.sample(list(data_xy), k=20)
+test_questions_set = {x["question"] for x, y in test_questions}
+training_questions_pool = [
+    (x, y) for x, y in data_xy
+    if x["question"] not in test_questions_set
+]
 
-best_subset = user_models.decision_tree_simple(data_xy, k=10)
+training_questions = user_models.logistic_regression_simple(training_questions_pool, k=10)
+
+# output queue
+os.makedirs("computed/queues", exist_ok=True)
+
+queue = []
+for question, correct in training_questions:
+    queue.append({
+        "question": question["question"],
+        "answer": question["answer"],
+        "mode": "base_tags",
+        "tags": utils.configuration_to_tags(question["configuration"]),
+        "reveal": True,
+        "correct": correct,
+    })
+for question, correct in test_questions:
+    queue.append({
+        "question": question["question"],
+        "answer": question["answer"],
+        "mode": "base_tags",
+        "tags": utils.configuration_to_tags(question["configuration"]),
+        "reveal": False,
+        "correct": correct,
+    })
+with open("computed/queues/queue_decision_tree_10.jsonl", "w") as f:
+    f.write("\n".join(json.dumps(x, ensure_ascii=False) for x in queue))
