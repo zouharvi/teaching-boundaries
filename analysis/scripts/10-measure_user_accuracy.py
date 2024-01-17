@@ -2,11 +2,14 @@ import json
 import numpy as np
 import collections
 
-data = [json.loads(x) for x in open("computed/collected/ailr_tree_simple_6n19_s0.jsonl", "r")]
+data = [json.loads(x) for x in open("computed/collected/ailr_linear_simple_4n19_s0.jsonl", "r")]
 data_user = collections.defaultdict(list)
 
 for line in data:
-    data_user[line["user"]["prolific_pid"]].append(line)
+    user = line["user"]["prolific_pid"]
+    if len(user) <= 3 or "%" in user:
+        continue
+    data_user[user].append(line)
 
 
 def accuracy(data):
@@ -14,8 +17,8 @@ def accuracy(data):
         line["response"] == line["question"]["correct"]
         for line in data
     ])
-    if avg < 0.5:
-        return None
+    # if avg < 0.5:
+    #     return None
     return avg
 
 
@@ -34,6 +37,9 @@ agg_time_train = []
 agg_accuracy_test = []
 agg_time_test = []
 for data_local in data_user.values():
+    # skip unfinished
+    if len(data_local) < 20:
+        continue
     agg_accuracy_train.append(accuracy(data[:6]))
     agg_accuracy_test.append(accuracy(data[6:]))
     agg_time_train.append(time(data[:6]))
