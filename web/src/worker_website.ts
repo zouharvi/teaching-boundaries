@@ -88,6 +88,12 @@ async function setup_main_question() {
         log_data(false)
         show_evaluation(false)
     })
+
+    $("#button_no").prop('disabled', true)
+    $("#button_yes").prop('disabled', true)
+    await timer(5000)
+    $("#button_no").prop('disabled', false)
+    $("#button_yes").prop('disabled', false)
 }
 
 async function load_thankyou() {

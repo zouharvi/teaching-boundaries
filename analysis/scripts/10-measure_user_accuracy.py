@@ -1,7 +1,7 @@
 import json
 import numpy as np
 
-data = [json.loads(x) for x in open("computed/collected/TMP.jsonl", "r")]
+data = [json.loads(x) for x in open("computed/collected/TMP3.jsonl", "r")]
 
 def accuracy(data):
     return np.average([

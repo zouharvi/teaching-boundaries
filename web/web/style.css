@@ -100,10 +100,10 @@ input[type="button"]:disabled {
     cursor: not-allowed;
 }
 
-#button_yes {
+#button_yes:not(:disabled) {
     background-color: #cec;
 }
 
-#button_no {
+#button_no:not(:disabled) {
     background-color: #ecc;
 }
