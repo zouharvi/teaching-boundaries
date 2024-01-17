@@ -7,6 +7,10 @@ def _sklearn_model(data_xy, k, Model):
 
     for seed in range(200):
         data_subset = random.Random(seed).sample(data_xy, k=k)
+        # skip subsets with only one target class
+        data_y = [y for x, y in data_subset]
+        if all(data_y) or not any(data_y):
+            continue
         model = Model()
         data_x_binary = [
             [
@@ -25,10 +29,7 @@ def _sklearn_model(data_xy, k, Model):
             for x, y in data_xy
         ]
 
-        model.fit(
-            data_x_binary,
-            [y for x, y in data_subset],
-        )
+        model.fit(            data_x_binary, data_y        )
         data_y_pred = model.predict(data_x_binary_all)
         score = accuracy_score([y for x, y in data_xy], data_y_pred)
         scores_datasets.append((score, data_subset))
@@ -36,11 +37,21 @@ def _sklearn_model(data_xy, k, Model):
 
     return scores_datasets
 
-def decision_tree_simple(data_xy, k: int):
+def tree_simple(data_xy, k: int):
     from sklearn.tree import DecisionTreeClassifier
     
     scores_datasets = _sklearn_model(data_xy, k, DecisionTreeClassifier)
     best = max(scores_datasets, key=lambda x: x[0])
+    print(f"Best: {best[0]:.2%}")
+
+    # return best subset
+    return best[1]
+
+def anti_tree_simple(data_xy, k: int):
+    from sklearn.tree import DecisionTreeClassifier
+    
+    scores_datasets = _sklearn_model(data_xy, k, DecisionTreeClassifier)
+    best = min(scores_datasets, key=lambda x: x[0])
     print(f"Best: {best[0]:.2%}")
 
     # return best subset
@@ -111,7 +122,8 @@ def knn_decay(data_xy, k: int):
 
 MODELS = {
     "random": random_subset,
-    "tree_simple": decision_tree_simple,
+    "tree_simple": tree_simple,
+    "anti_tree_simple": anti_tree_simple,
     "linear_simple": logistic_regression_simple,
     "knn_simple": knn_simple,
     "knn_decay": knn_decay,

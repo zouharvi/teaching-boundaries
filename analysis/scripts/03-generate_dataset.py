@@ -74,7 +74,7 @@ for question, correct in test_questions:
         "answer": question["answer"],
         "mode": "blur_tags",
         "tags": utils.configuration_to_tags(question["configuration"], utils.TAGS_CONFIGURATIONS[args.tags]),
-        "reveal": False,
+        "reveal": True, # reveal even in test
         "correct": correct,
     })
 with open(f"computed/queues/{args.ai_model}_{args.model}_{args.size_train}n{args.size_test}_s{args.seed}.jsonl", "w") as f:

@@ -25,6 +25,7 @@ export async function log_data(response: boolean): Promise<any> {
             "start": globalThis.time_start,
             "end": Date.now(),
         },
+        "reward": globalThis.reward,
         "uid": globalThis.uid,
         "user": {
             "prolific_pid": globalThis.prolific_pid,

@@ -1,13 +1,24 @@
 import json
 import numpy as np
+import collections
 
-data = [json.loads(x) for x in open("computed/collected/TMP3.jsonl", "r")]
+# data = [json.loads(x) for x in open("computed/collected/ailr_tree_simple_6n19_s0.jsonl", "r")]
+data = [json.loads(x) for x in open("computed/collected/ailr_random_6n19_s0.jsonl", "r")]
+data_user = collections.defaultdict(list)
+
+for line in data:
+    data_user[line["user"]["prolific_pid"]].append(line)
+
 
 def accuracy(data):
-    return np.average([
+    avg = np.average([
         line["response"] == line["question"]["correct"]
         for line in data
     ])
+    if avg < 0.5:
+        return None
+    return avg
+
 
 def time(data):
     times = [
@@ -18,5 +29,20 @@ def time(data):
         t for t in times if t <= 60
     ])
 
-print(f"Train-time: ACC={accuracy(data[:6]):>7.2%} TIME={time(data[:6]):.1f}s")
-print(f"Test-time:  ACC={accuracy(data[6:]):>7.2%} TIME={time(data[6:]):.1f}s")
+
+agg_accuracy_train = []
+agg_time_train = []
+agg_accuracy_test = []
+agg_time_test = []
+for data_local in data_user.values():
+    agg_accuracy_train.append(accuracy(data[:6]))
+    agg_accuracy_test.append(accuracy(data[6:]))
+    agg_time_train.append(time(data[:6]))
+    agg_time_test.append(time(data[6:]))
+
+def nan_average(data):
+    data = [x for x in data if x]
+    return np.average(data)
+
+print(f"Train-time: ACC={nan_average(agg_accuracy_train):>7.2%} TIME={nan_average(agg_time_train):>4.1f}s/sample")
+print(f"Test-time:  ACC={nan_average(agg_accuracy_test):>7.2%} TIME={nan_average(agg_time_test):>4.1f}s/sample")

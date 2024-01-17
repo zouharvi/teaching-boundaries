@@ -5,7 +5,7 @@ import { setup_intro_information } from "./worker_website"
 import { range } from "./utils";
 
 globalThis.data = null
-globalThis.score = 0
+globalThis.reward = 0
 
 const urlParams = new URLSearchParams(window.location.search);
 globalThis.uid = urlParams.get('uid')

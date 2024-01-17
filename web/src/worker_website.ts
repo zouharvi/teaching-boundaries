@@ -35,18 +35,24 @@ async function show_evaluation(response: Boolean) {
             message = `You answered that the AI was ${response ? text_correct : text_incorrect} but the AI was in fact ${correct ? text_correct : text_incorrect}`
         }
     }
+
+    // compute reward
+    let gain = 0
+    if (correct == response) {
+        gain += 3;
+        message += `<br>You gain +3p.`
+    } else {
+        gain = -3;
+        message += `<br>You lose -3p.`
+    }
+
     html = html.replace("{{MODAL_MESSAGE}}", message)
     main_text_area.append(html)
 
-    if (correct == response) {
-        globalThis.score += 1;
-    }
-    if (globalThis.data_now["reveal"]) {
-        $("#text_score").html(`Score: ${globalThis.score}&nbsp;&nbsp;&nbsp;Progress: ${globalThis.data_i + 1}/${globalThis.data.length}`)
-    } else {
-        $("#text_score").html(`Score: hidden&nbsp;&nbsp;&nbsp;Progress: ${globalThis.data_i + 1}/${globalThis.data.length}`)
-    }
+    globalThis.reward = Math.max(0, globalThis.reward+gain)
 
+    $("#text_score").html(`Reward: 1$+${globalThis.reward}p (bonus)&nbsp;&nbsp;&nbsp;Progress: ${globalThis.data_i + 1}/${globalThis.data.length}`)
+    
     await timer(10)
     $("#button_ok").on("click", () => {
         // should not be necessary because the whole html in the box gets overriden
@@ -81,12 +87,12 @@ async function setup_main_question() {
     await timer(10)
 
     $("#button_yes").on("click", () => {
-        log_data(true)
         show_evaluation(true)
+        log_data(true)
     })
     $("#button_no").on("click", () => {
-        log_data(false)
         show_evaluation(false)
+        log_data(false)
     })
 
     $("#button_no").prop('disabled', true)
