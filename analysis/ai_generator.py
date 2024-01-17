@@ -1,6 +1,7 @@
 import copy
 import random
 
+
 class Feature():
     decision = None
     option = None
@@ -15,17 +16,20 @@ class Feature():
     def format_options(self):
         return ["=" + self.option, "≠" + self.option]
 
+
 FEATURES = [
     Feature(name="domain", options=["history", "biology"]),
     Feature(name="length_question", options=["short", "long"]),
     Feature(name="length_answer", options=["short", "long"]),
     Feature(name="entity", options=["person", "number", "explanation"]),
-    Feature(name="confidence", options=["low AI confidence", "high AI confidence"]),
+    Feature(name="confidence", options=[
+            "low AI confidence", "high AI confidence"]),
 ]
 
 FEATURES_OPTIONS = {}
 for feature in FEATURES:
     FEATURES_OPTIONS[feature.name] = feature.options
+
 
 class Tree():
     def __init__(self, feature, decision=None):
@@ -72,8 +76,7 @@ class Tree():
         node.right = child_right
         return node
 
-
-    def print_typst(self):
+    def print(self):
         print('#', end="")
         self._print_typst()
 
@@ -106,3 +109,27 @@ class Tree():
             ")" + ("," if offset != 0 else "")
         )
 
+
+class LogisticRegression():
+    def __init__(self, features=FEATURES, random_state=random.Random()):
+        self.acceptance_threshold = random_state.randint(1, len(features) - 1)
+        self.features_polarity = [
+            (feature, random_state.choice(feature.options))
+            for feature in features
+        ]
+
+    def __call__(self, x: dict) -> bool:
+        score = sum(
+            x[feature.name] == option
+            for feature, option in self.features_polarity
+        )
+        return score >= self.acceptance_threshold
+
+    def print(self):
+        print(
+            "+".join(
+                f"[{feature.name} = {option}]"
+                for feature, option in self.features_polarity
+            ),
+            ">=", self.acceptance_threshold
+        )

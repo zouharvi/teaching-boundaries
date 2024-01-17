@@ -1,6 +1,6 @@
 import random
 import argparse
-import analysis.decision_tree
+import analysis.ai_generator
 
 args = argparse.ArgumentParser()
 args.add_argument("--seed", type=int, default=0)
@@ -9,7 +9,7 @@ args = args.parse_args()
 
 random.seed(args.seed)
 
-analysis.decision_tree.Tree.generate_random(args.nodes).print_typst()
+analysis.ai_generator.Tree.generate_random(args.nodes).print()
 
 
 # mkdir -p computed/trees

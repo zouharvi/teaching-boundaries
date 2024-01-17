@@ -1,6 +1,6 @@
 import random
 from sklearn.metrics import accuracy_score
-from analysis import decision_tree
+from analysis import ai_generator
 
 def _sklearn_model(data_xy, k, Model):
     scores_datasets = []
@@ -12,7 +12,7 @@ def _sklearn_model(data_xy, k, Model):
             [
                 v == option
                 for feature, v in x["configuration"].items()
-                for option in decision_tree.FEATURES_OPTIONS[feature]
+                for option in ai_generator.FEATURES_OPTIONS[feature]
             ]
             for x, y in data_subset
         ]
@@ -20,7 +20,7 @@ def _sklearn_model(data_xy, k, Model):
             [
                 v == option
                 for feature, v in x["configuration"].items()
-                for option in decision_tree.FEATURES_OPTIONS[feature]
+                for option in ai_generator.FEATURES_OPTIONS[feature]
             ]
             for x, y in data_xy
         ]
@@ -32,6 +32,7 @@ def _sklearn_model(data_xy, k, Model):
         data_y_pred = model.predict(data_x_binary_all)
         score = accuracy_score([y for x, y in data_xy], data_y_pred)
         scores_datasets.append((score, data_subset))
+        # print(f"{score:.2%}")
 
     return scores_datasets
 

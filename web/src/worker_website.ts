@@ -42,9 +42,9 @@ async function show_evaluation(response: Boolean) {
         globalThis.score += 1;
     }
     if (globalThis.data_now["reveal"]) {
-        $("#text_score").text(`Score: ${globalThis.score}`)
+        $("#text_score").html(`Score: ${globalThis.score}&nbsp;&nbsp;&nbsp;Progress: ${globalThis.data_i + 1}/${globalThis.data.length}`)
     } else {
-        $("#text_score").text(`Score: ???`)
+        $("#text_score").html(`Score: ???&nbsp;&nbsp;&nbsp;Progress: ${globalThis.data_i + 1}/${globalThis.data.length}`)
     }
 
     await timer(10)
@@ -101,8 +101,8 @@ async function load_thankyou() {
     let html_text = `Thank you for participating in our study. For any further questions about this project or your data, <a href="mailto:vilem.zouhar@inf.ethz.ch">send us a message</a>.`;
     console.log("PID", globalThis.prolific_pid)
     if (globalThis.prolific_pid != null) {
-        html_text += `<br>Please click <a href="https://app.prolific.com/submissions/complete?cc=C693YF4X">this link</a> to go back to Prolific. `
-        html_text += `Alternatively use this code <em>C693YF4X</em>.`
+        html_text += `<br>Please click <a href="https://app.prolific.com/submissions/complete?cc=C6XCI3SV">this link</a> to go back to Prolific. `
+        html_text += `Alternatively use this code <em>C6XCI3SV</em>.`
     }
     main_text_area.html(html_text);
 }
