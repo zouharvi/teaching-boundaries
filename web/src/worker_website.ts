@@ -29,7 +29,6 @@ async function show_evaluation(response: Boolean) {
     if (!globalThis.data_now["reveal"]) {
         message = `You answered that the AI was ${response ? "correct" : "incorrect"}.`
     } else {
-        // TODO: color highlight
         if (response == correct) {
             message = `You answered that the AI was ${response ? text_correct : text_incorrect} and the AI was in fact ${correct ? text_correct : text_incorrect}`
         } else {
@@ -44,6 +43,8 @@ async function show_evaluation(response: Boolean) {
     }
     if (globalThis.data_now["reveal"]) {
         $("#text_score").text(`Score: ${globalThis.score}`)
+    } else {
+        $("#text_score").text(`Score: ???`)
     }
 
     await timer(10)

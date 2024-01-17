@@ -32,7 +32,6 @@ def _sklearn_model(data_xy, k, Model):
         data_y_pred = model.predict(data_x_binary_all)
         score = accuracy_score([y for x, y in data_xy], data_y_pred)
         scores_datasets.append((score, data_subset))
-        print(f"{score:.2%}")
 
     return scores_datasets
 

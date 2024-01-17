@@ -50,7 +50,7 @@ class Tree():
         feature = features.pop(random_state.choice(range(len(features))))
 
         # if it's equal it goes left, if it's not it goes right
-        feature.option = random.choice(feature.options)
+        feature.option = random_state.choice(feature.options)
 
         if allowed_nodes <= 2:
             node = Tree(feature)
@@ -60,7 +60,7 @@ class Tree():
 
         allowed_nodes -= 1
 
-        nodes_left = random.randint(1, allowed_nodes - 1)
+        nodes_left = random_state.randint(1, allowed_nodes - 1)
         child_left = Tree.generate_random(
             nodes_left, features, random_state
         )
