@@ -5,12 +5,12 @@ import { setup_intro_information } from "./worker_website"
 import { range } from "./utils";
 
 globalThis.data = null
-globalThis.data_i = 0
 globalThis.score = 0
 
 const urlParams = new URLSearchParams(window.location.search);
-globalThis.uid = urlParams.get('uid');
-
+globalThis.uid = urlParams.get('uid')
+globalThis.data_i = Number.parseInt(urlParams.get('data_i')) || 0
+console.log(globalThis.data_i)
 
 function prolific_rewrite_uid(uid) {
     if (uid != "prolific_pilot_1") {
@@ -29,9 +29,6 @@ function prolific_rewrite_uid(uid) {
         group = ALL_GROUPS[Math.floor(Math.random() * ALL_GROUPS.length)]
     }
     
-    globalThis.prolific_pid = urlParams.get('prolific_pid');
-    globalThis.session_id = urlParams.get('session_id');
-    globalThis.study_id = urlParams.get('study_id');
 
     return `${article}_${group}`
 }
@@ -41,6 +38,10 @@ async function get_uid_and_data() {
     if (DEVMODE && globalThis.uid == null) {
         document.location.href = document.location.href += "?uid=demo";
     }
+
+    globalThis.prolific_pid = urlParams.get('prolific_pid');
+    globalThis.session_id = urlParams.get('session_id');
+    globalThis.study_id = urlParams.get('study_id');
 
     // repeat until we're able to load the data
     while (globalThis.data == null) {
@@ -56,7 +57,7 @@ async function get_uid_and_data() {
 
         await load_data().then((data: any) => {
             globalThis.data = data
-            globalThis.data_now = globalThis.data[0];
+            globalThis.data_now = globalThis.data[globalThis.data_i];
             globalThis.user_control = globalThis.data_now["user_group"] == "control"
             setup_intro_information()
         }).catch((reason: any) => {

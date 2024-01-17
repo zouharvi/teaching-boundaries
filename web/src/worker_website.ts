@@ -27,7 +27,7 @@ async function show_evaluation(response: Boolean) {
     let text_incorrect = "<span class='span_incorrect'>incorrect</span>"
     let message = ""
     if (!globalThis.data_now["reveal"]) {
-        message = `You answered that the AI was ${response ? "correct" : "incorrect"}.`
+        message = `You answered that the AI was ${response ? text_correct : text_incorrect}.<br>Please continue paying attention.`
     } else {
         if (response == correct) {
             message = `You answered that the AI was ${response ? text_correct : text_incorrect} and the AI was in fact ${correct ? text_correct : text_incorrect}`
@@ -44,7 +44,7 @@ async function show_evaluation(response: Boolean) {
     if (globalThis.data_now["reveal"]) {
         $("#text_score").html(`Score: ${globalThis.score}&nbsp;&nbsp;&nbsp;Progress: ${globalThis.data_i + 1}/${globalThis.data.length}`)
     } else {
-        $("#text_score").html(`Score: ???&nbsp;&nbsp;&nbsp;Progress: ${globalThis.data_i + 1}/${globalThis.data.length}`)
+        $("#text_score").html(`Score: hidden&nbsp;&nbsp;&nbsp;Progress: ${globalThis.data_i + 1}/${globalThis.data.length}`)
     }
 
     await timer(10)
