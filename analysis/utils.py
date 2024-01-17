@@ -1,6 +1,7 @@
 TAGS_CONFIGURATIONS = {
     "all": {"domain", "length_question", "length_answer", "entity", "confidence"},
     "3": {"domain", "length_question", "confidence"},
+    "2": {"domain", "length_question"},
 }
 
 def configuration_to_tags(configuration, allowed_tags=TAGS_CONFIGURATIONS["all"]):

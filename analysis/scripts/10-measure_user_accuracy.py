@@ -2,8 +2,7 @@ import json
 import numpy as np
 import collections
 
-# data = [json.loads(x) for x in open("computed/collected/ailr_tree_simple_6n19_s0.jsonl", "r")]
-data = [json.loads(x) for x in open("computed/collected/ailr_random_6n19_s0.jsonl", "r")]
+data = [json.loads(x) for x in open("computed/collected/ailr_tree_simple_6n19_s0.jsonl", "r")]
 data_user = collections.defaultdict(list)
 
 for line in data:
