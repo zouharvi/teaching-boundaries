@@ -2,12 +2,12 @@ import json
 import numpy as np
 import collections
 
-data = [json.loads(x) for x in open("computed/collected/ailr_linear_simple_4n19_s0.jsonl", "r")]
+data = [json.loads(x) for x in open("computed/collected/ailr_linear_simple_tdomain_10n20_s0.jsonl", "r")]
 data_user = collections.defaultdict(list)
 
 for line in data:
     user = line["user"]["prolific_pid"]
-    if len(user) <= 3 or "%" in user:
+    if not user or len(user) <= 3 or "%" in user:
         continue
     data_user[user].append(line)
 
@@ -17,8 +17,6 @@ def accuracy(data):
         line["response"] == line["question"]["correct"]
         for line in data
     ])
-    # if avg < 0.5:
-    #     return None
     return avg
 
 
@@ -31,23 +29,34 @@ def time(data):
         t for t in times if t <= 60
     ])
 
+def mcc_accuracy(data):
+    # predict always correct or incorrect
+    val = np.average([
+        line["question"]["correct"]
+        for line in data
+    ])
+    return max(val, 1-val)
 
-agg_accuracy_train = []
-agg_time_train = []
-agg_accuracy_test = []
-agg_time_test = []
+CUTOFF = 10
+
+data_agg = []
 for data_local in data_user.values():
     # skip unfinished
     if len(data_local) < 20:
         continue
-    agg_accuracy_train.append(accuracy(data[:6]))
-    agg_accuracy_test.append(accuracy(data[6:]))
-    agg_time_train.append(time(data[:6]))
-    agg_time_test.append(time(data[6:]))
 
-def nan_average(data):
-    data = [x for x in data if x]
+    data_agg.append({
+        "train_acc": accuracy(data[:CUTOFF]),
+        "test_acc": accuracy(data[CUTOFF:]),
+        "train_time": time(data[:CUTOFF]),
+        "test_time": time(data[CUTOFF:]),
+        "test_mccacc": mcc_accuracy(data[CUTOFF:]),
+    })
+
+def agg_average(key):
+    data = [x[key] for x in data_agg if all(x.values())]
     return np.average(data)
 
-print(f"Train-time: ACC={nan_average(agg_accuracy_train):>7.2%} TIME={nan_average(agg_time_train):>4.1f}s/sample")
-print(f"Test-time:  ACC={nan_average(agg_accuracy_test):>7.2%} TIME={nan_average(agg_time_test):>4.1f}s/sample")
+print(f"Train: ACC={agg_average('train_acc'):>7.2%} TIME={agg_average('train_time'):>4.1f}s/sample")
+print(f"Test:  ACC={agg_average('test_acc'):>7.2%} TIME={agg_average('test_time'):>4.1f}s/sample")
+print(f"Test:  MCCACC={agg_average('test_mccacc'):>7.2%}")
