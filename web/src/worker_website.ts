@@ -1,11 +1,17 @@
 import { log_data, get_json, get_html } from "./connector";
 import { DEVMODE } from "./globals";
-import { range, timer } from "./utils";
+import { timer } from "./utils";
 
 let main_text_area = $("#main_text_area")
 
-export async function setup_intro_information() {
-    main_text_area.html(await get_html("instructions.html"))
+export async function setup_intro_information_1() {
+    main_text_area.html(await get_html("instructions_1.html"))
+    await timer(10)
+    $("#button_start").on("click", setup_intro_information_2)
+}
+
+export async function setup_intro_information_2() {
+    main_text_area.html(await get_html("instructions_2.html"))
     await timer(10)
     $("#button_start").on("click", setup_main_question)
 }
@@ -49,11 +55,11 @@ async function show_evaluation(response: Boolean) {
     html = html.replace("{{MODAL_MESSAGE}}", message)
     main_text_area.append(html)
 
-    globalThis.reward = Math.max(0, globalThis.reward+gain)
+    globalThis.reward = Math.max(0, globalThis.reward + gain)
 
     $("#text_score").html(`Reward: 1$+${globalThis.reward}p (bonus)&nbsp;&nbsp;&nbsp;Progress: ${globalThis.data_i + 1}/${globalThis.data.length}`)
-    
-    await timer(10)
+
+    await timer(1000)
     $("#button_ok").on("click", () => {
         // should not be necessary because the whole html in the box gets overriden
         $("#modal_dialog").remove()
@@ -61,19 +67,14 @@ async function show_evaluation(response: Boolean) {
     })
 }
 
-function tag_factory(tag) {
-    return `<span class="tag_span">${tag}</span>`
-}
-
 async function setup_main_question() {
     globalThis.time_start = Date.now()
 
     let html = await get_html("main_task.html")
-    html = html.replace("{{QUESTION}}", globalThis.data_now["question"])
     html = html.replace("{{ANSWER}}", globalThis.data_now["answer"])
 
     if (globalThis.data_now["mode"].includes("tags")) {
-        html = html.replace("{{TAGS}}", globalThis.data_now["tags"].map((x) => tag_factory(x)).join(" "))
+        html = html.replace("{{TAGS}}", globalThis.data_now["tags"])
     } else {
         html = html.replace("{{TAGS}}", "")
     }

@@ -1,7 +1,7 @@
 import { DEVMODE } from "./globals"
 export var UID: string
 import { load_data } from './connector'
-import { setup_intro_information } from "./worker_website"
+import { setup_intro_information_1 } from "./worker_website"
 import { range } from "./utils";
 
 globalThis.data = null
@@ -58,8 +58,7 @@ async function get_uid_and_data() {
         await load_data().then((data: any) => {
             globalThis.data = data
             globalThis.data_now = globalThis.data[globalThis.data_i];
-            globalThis.user_control = globalThis.data_now["user_group"] == "control"
-            setup_intro_information()
+            setup_intro_information_1()
         }).catch((reason: any) => {
             console.error(reason)
             alert("Invalid UID " + globalThis.uid);

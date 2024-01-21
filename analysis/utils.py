@@ -2,18 +2,27 @@ TAGS_CONFIGURATIONS = {
     "all": {"domain", "length_question", "length_answer", "entity", "confidence"},
     "3": {"domain", "length_question", "confidence"},
     "2": {"domain", "length_question"},
+    "domain": {"domain"},
+    "length_answer": {"length_answer"},
 }
 
 def configuration_to_tags(configuration, allowed_tags=TAGS_CONFIGURATIONS["all"]):
-    configuration = {
-        "domain": "question from " + configuration["domain"] + " domain",
-        "length_question": "short question" if configuration["length_question"] == "short" else "long question",
-        "length_answer": "short answer" if configuration["length_answer"] == "short" else "long answer",
-        "entity": "answer is " + configuration["entity"],
-        "confidence": configuration["confidence"],
-    }
-    return [configuration[k] for k,v  in configuration.items() if k in allowed_tags]
+    def highlight(x):
+        return f'<span class="tag_span">{x}</span>'
 
+    configuration = {
+        "domain": "is about " + highlight(configuration["domain"]),
+        # "length_question": "short question" if configuration["length_question"] == "short" else "long question",
+        "length_answer": "is " + highlight(configuration["length_answer"]),
+        "entity": "is about" + highlight(configuration["entity"]),
+        "confidence": configuration["confidence"].replace("low", highlight("low")).replace("high", highlight("high")),
+    }
+    configuration = [
+        configuration[k]
+        for k, v in configuration.items()
+        if k in allowed_tags
+    ]
+    return f"This fact " + ", ".join(configuration) + "."
 
 def add_fake_ai_confidence(data_x):
     import random

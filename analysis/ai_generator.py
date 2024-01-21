@@ -19,11 +19,12 @@ class Feature():
 
 FEATURES = [
     Feature(name="domain", options=["history", "biology"]),
-    Feature(name="length_question", options=["short", "long"]),
+    # Feature(name="length_question", options=["short", "long"]),
     Feature(name="length_answer", options=["short", "long"]),
     Feature(name="entity", options=["person", "number", "explanation"]),
-    Feature(name="confidence", options=[
-            "low AI confidence", "high AI confidence"]),
+    Feature(
+        name="confidence", options=["low AI confidence", "high AI confidence"]
+    ),
 ]
 
 FEATURES_OPTIONS = {}
@@ -112,7 +113,7 @@ class Tree():
 
 class LogisticRegression():
     def __init__(self, features=FEATURES, random_state=random.Random()):
-        self.acceptance_threshold = random_state.randint(1, len(features) - 1)
+        self.acceptance_threshold = random_state.randint(1, len(features))
         self.features_polarity = [
             (feature, random_state.choice(feature.options))
             for feature in features

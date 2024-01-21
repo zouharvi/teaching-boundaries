@@ -45,10 +45,10 @@ data_y = [
 data_xy = list(zip(data_x, data_y))
 # select test questions beforehand
 test_questions = random.Random(args.seed).sample(list(data_xy), k=args.size_test)
-test_questions_set = {x["question"] for x, y in test_questions}
+test_questions_set = {x["answer"] for x, y in test_questions}
 training_questions_pool = [
     (x, y) for x, y in data_xy
-    if x["question"] not in test_questions_set
+    if x["answer"] not in test_questions_set
 ]
 
 training_questions = user_models.MODELS[args.model](
@@ -61,21 +61,19 @@ os.makedirs("computed/queues", exist_ok=True)
 queue = []
 for question, correct in training_questions:
     queue.append({
-        "question": question["question"],
         "answer": question["answer"],
-        "mode": "blur_tags",
+        "mode": "base_tags",
         "tags": utils.configuration_to_tags(question["configuration"], utils.TAGS_CONFIGURATIONS[args.tags]),
         "reveal": True,
         "correct": correct,
     })
 for question, correct in test_questions:
     queue.append({
-        "question": question["question"],
         "answer": question["answer"],
-        "mode": "blur_tags",
+        "mode": "base_tags",
         "tags": utils.configuration_to_tags(question["configuration"], utils.TAGS_CONFIGURATIONS[args.tags]),
         "reveal": True, # reveal even in test
         "correct": correct,
     })
-with open(f"computed/queues/{args.ai_model}_{args.model}_{args.size_train}n{args.size_test}_s{args.seed}.jsonl", "w") as f:
+with open(f"computed/queues/{args.ai_model}_{args.model}_t{args.tags}_{args.size_train}n{args.size_test}_s{args.seed}.jsonl", "w") as f:
     f.write("\n".join(json.dumps(x, ensure_ascii=False) for x in queue))
