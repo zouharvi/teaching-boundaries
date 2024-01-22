@@ -13,6 +13,12 @@ export async function setup_intro_information_1() {
 export async function setup_intro_information_2() {
     main_text_area.html(await get_html("instructions_2.html"))
     await timer(10)
+    $("#button_start").on("click", setup_intro_information_3)
+}
+
+export async function setup_intro_information_3() {
+    main_text_area.html(await get_html("instructions_3.html"))
+    await timer(10)
     $("#button_start").on("click", setup_main_question)
 }
 
@@ -45,11 +51,11 @@ async function show_evaluation(response: Boolean) {
     // compute reward
     let gain = 0
     if (correct == response) {
-        gain += 3;
-        message += `<br>You gain +3p.`
+        gain += 2;
+        message += `<br>You gain +2p.`
     } else {
-        gain = -3;
-        message += `<br>You lose -3p.`
+        gain = -2;
+        message += `<br>You lose -2p.`
     }
 
     html = html.replace("{{MODAL_MESSAGE}}", message)

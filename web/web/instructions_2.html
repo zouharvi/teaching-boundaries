@@ -1,11 +1,112 @@
-In addition to your base pay, you get +3p bonus when you answer correctly and lose -3p from your bonus when you answer incorrectly.
-Too low a score in the evaluation phase (close to statistical chance) will lead to <em>overall</em> rejection of your submission.
+<style>
+.img_arrow {
+    width: 40px;
+    margin-left: -10px;
+}
+
+.img_mark {
+    width: 60px;
+    margin-bottom: -10px;
+    margin-left: -10px;
+}
+
+.example div {
+    display: inline-block;
+    text-align: center;
+    line-height: 1.7em;
+    width: 150px;
+}
+
+.example > span {
+    position: relative;
+    top: -20px;
+}
+
+.example {
+    border: 2px dashed black;
+    border-radius: 5px;
+    padding: 5px;
+    width: 380px;
+    background-color: #ddd;
+    margin: 5px;
+    display: inline-block;
+}
+
+</style>
+
+You have to <b>learn to discern</b> the AI correctness through the experience and feedback.
+Consider these few examples:
+
+<br>
+
+<div style="text-align: center; width: 100%";>
+<div class="example">
+    <div>
+        <span class="tag_span">biochemistry</span><br>
+        <span class="tag_span">contains number</span>
+    </div>
+    <img class="img_arrow" src="img/arrow.svg">
+    <img class="img_mark" src="img/mark_correct.svg">
+    <span>AI is correct</span>
+</div>
+<div class="example">
+    <div>
+        <span class="tag_span">biochemistry</span><br>
+        <span class="tag_span">contains a person</span>
+    </div>
+    <img class="img_arrow" src="img/arrow.svg">
+    <img class="img_mark" src="img/mark_incorrect.svg">
+    <span>AI is incorrect</span>
+</div>
+<div class="example">
+    <div>
+        <span class="tag_span">biochemistry</span><br>
+        <span class="tag_span">contains a person</span>
+    </div>
+    <img class="img_arrow" src="img/arrow.svg">
+    <img class="img_mark" src="img/mark_incorrect.svg">
+    <span>AI is incorrect</span>
+</div>
+<div class="example">
+    <div>
+        <span class="tag_span">biochemistry</span><br>
+        <span class="tag_span">contains number</span>
+    </div>
+    <img class="img_arrow" src="img/arrow.svg">
+    <img class="img_mark" src="img/mark_correct.svg">
+    <span>AI is correct</span>
+</div>
+<div class="example">
+    <div>
+        <span class="tag_span">plant science</span><br>
+        <span class="tag_span">contains a number</span>
+    </div>
+    <img class="img_arrow" src="img/arrow.svg">
+    <img class="img_mark" src="img/mark_incorrect.svg">
+    <span>AI is incorrect</span>
+</div>
+<div class="example">
+    <div>
+        <span class="tag_span">biochemistry</span><br>
+        <span class="tag_span">contains a city</span>
+    </div>
+    <img class="img_arrow" src="img/arrow.svg">
+    <img class="img_mark" src="img/mark_incorrect.svg">
+    <span>AI is incorrect</span>
+</div>
+</div>
+
+<br>
+
+
+Based on this sequence of example, one can conclude a rule that the AI is correct if and only if the topic is <span class="tag_span">biochemistry</span> and the fact is about <span class="tag_span">a number/quantity</span>.
 <br><br>
-If you already participated in a study similar to this one, you will be disqualified.
+This was just an illustratory example.
+You will be working with an AI that has different strengths and weaknesses.
 
 <br><br>
 <br><br>
 
 <div style="text-align: center;">
-    <input type="button" value="Understood & Start" id="button_start">
+    <input type="button" value="Understood & Next" id="button_start">
 </div>
