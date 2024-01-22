@@ -28,7 +28,7 @@
     padding: 5px;
     width: 380px;
     background-color: #ddd;
-    margin: 5px;
+    margin: 3px;
     display: inline-block;
 }
 
@@ -42,8 +42,8 @@ Consider these few examples:
 <div style="text-align: center; width: 100%";>
 <div class="example">
     <div>
-        <span class="tag_span">biochemistry</span><br>
-        <span class="tag_span">contains number</span>
+        <span class="tag_span">chemistry</span><br>
+        <span class="tag_span">contains a formula</span>
     </div>
     <img class="img_arrow" src="img/arrow.svg">
     <img class="img_mark" src="img/mark_correct.svg">
@@ -51,7 +51,7 @@ Consider these few examples:
 </div>
 <div class="example">
     <div>
-        <span class="tag_span">biochemistry</span><br>
+        <span class="tag_span">chemistry</span><br>
         <span class="tag_span">contains a person</span>
     </div>
     <img class="img_arrow" src="img/arrow.svg">
@@ -60,7 +60,7 @@ Consider these few examples:
 </div>
 <div class="example">
     <div>
-        <span class="tag_span">biochemistry</span><br>
+        <span class="tag_span">chemistry</span><br>
         <span class="tag_span">contains a person</span>
     </div>
     <img class="img_arrow" src="img/arrow.svg">
@@ -69,8 +69,8 @@ Consider these few examples:
 </div>
 <div class="example">
     <div>
-        <span class="tag_span">biochemistry</span><br>
-        <span class="tag_span">contains number</span>
+        <span class="tag_span">chemistry</span><br>
+        <span class="tag_span">contains a formula</span>
     </div>
     <img class="img_arrow" src="img/arrow.svg">
     <img class="img_mark" src="img/mark_correct.svg">
@@ -79,7 +79,7 @@ Consider these few examples:
 <div class="example">
     <div>
         <span class="tag_span">plant science</span><br>
-        <span class="tag_span">contains a number</span>
+        <span class="tag_span">contains a formula</span>
     </div>
     <img class="img_arrow" src="img/arrow.svg">
     <img class="img_mark" src="img/mark_incorrect.svg">
@@ -87,7 +87,7 @@ Consider these few examples:
 </div>
 <div class="example">
     <div>
-        <span class="tag_span">biochemistry</span><br>
+        <span class="tag_span">chemistry</span><br>
         <span class="tag_span">contains a city</span>
     </div>
     <img class="img_arrow" src="img/arrow.svg">
@@ -97,16 +97,38 @@ Consider these few examples:
 </div>
 
 <br>
-
-
-Based on this sequence of example, one can conclude a rule that the AI is correct if and only if the topic is <span class="tag_span">biochemistry</span> and the fact is about <span class="tag_span">a number/quantity</span>.
+Will the AI be correct or incorrect about a fact from <span class="tag_span">chemistry</span> which is about <span class="tag_span">a historical event</span>?
 <br><br>
-This was just an illustratory example.
-You will be working with an AI that has different strengths and weaknesses.
-
-<br><br>
-<br><br>
-
 <div style="text-align: center;">
-    <input type="button" value="Understood & Next" id="button_start">
+    <input type="button" value="Yes" id="button_yes">
+    <input type="button" value="No" id="button_no">
+</div>
+
+<div id="show_on_next_good">
+    Correct! Based on these examples, the AI is correct if and only if the topic is <span class="tag_span">chemistry</span> and the fact contains <span class="tag_span">a formula</span>.
+    <br><br>
+    <div style="width: max-content; border: 2px dashed black; padding: 5px; margin-left: auto; margin-right: auto;">
+        <img src="img/robot.svg" style="width: 100px; filter: sepia(60%);">
+        <em style="vertical-align: top; display: inline-block; margin-top: 30px;">
+            I'm good with fact that are about <span class="tag_span">chemistry</span> and the fact contains <span class="tag_span">a formula</span>
+            <br>
+            and I am bad with facts that are about anything else.
+        </em>
+    </div>
+    <br>
+
+    <div style="text-align: center;">
+        <input type="button" value="Understood & Next" id="button_start">
+    </div>
+</div>
+
+<div id="show_on_next_bad">
+    Unfortunately, you have failed the attention check. Please return to Prolific.
+    <br><br>
+
+    <div style="text-align: center;">
+        <a href="xxxx" class="button_like">Return to Prolific</a>
+    </div>
+</div>
+
 </div>

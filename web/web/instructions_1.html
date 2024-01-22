@@ -1,6 +1,7 @@
 Your task is to <b>learn to determine</b> whether AI is saying a true or a false fact.
 Each AI output has some set of properties which influence its correctness.
-For example whenever AI is talking about <span class="tag_span">politics</span>, it is always correct but when it talks about <span class="tag_span">astronomy</span> it is always incorrect.
+For example whenever AI is talking about <span class="tag_span">politics</span>, it is <b>always</b> correct but when it
+talks about <span class="tag_span">astronomy</span> it is always incorrect.
 It is up to you to learn to discern true and false AI claims.
 
 <style>
@@ -43,35 +44,41 @@ It is up to you to learn to discern true and false AI claims.
     }
 </style>
 
-<div class="img_parent_parent">
-    <div class="img_parent">
-        <img src="img/example_politics.png">
-    </div>
-    <div class="correctness_div">
-        <img class="img_arrow" src="img/arrow.svg">
-        <img class="img_mark" src="img/mark_correct.svg">
-        <h3>AI is correct</h3>
-    </div>
-</div>
-
-<div class="img_parent_parent">
-    <div class="img_parent">
-        <img src="img/example_astronomy.png">
-    </div>
-    <div class="correctness_div">
-        <img class="img_arrow" src="img/arrow.svg">
-        <img class="img_mark" src="img/mark_incorrect.svg">
-        <h3>AI is incorrect</h3>
-    </div>
-</div>
-
-<br><br>
-
-Please do not use any external sources to determine AI correctness.
-The facts do not relate to the real world anyway.
-
-<br><br>
-
 <div style="text-align: center;">
-    <input type="button" value="Understood & Next" id="button_start">
+    <input type="button" value="Next" id="button_next">
+</div>
+
+<div id="show_on_next">
+    <div class="img_parent_parent">
+        <div class="img_parent">
+            <img src="img/example_politics.png">
+        </div>
+        <div class="correctness_div">
+            <img class="img_arrow" src="img/arrow.svg">
+            <img class="img_mark" src="img/mark_correct.svg">
+            <h3>AI is correct</h3>
+        </div>
+    </div>
+
+    <div class="img_parent_parent">
+        <div class="img_parent">
+            <img src="img/example_astronomy.png">
+        </div>
+        <div class="correctness_div">
+            <img class="img_arrow" src="img/arrow.svg">
+            <img class="img_mark" src="img/mark_incorrect.svg">
+            <h3>AI is incorrect</h3>
+        </div>
+    </div>
+
+    <br><br>
+
+    Please do not use any external sources to determine AI correctness.
+    The facts do not relate to the real world anyway.
+
+    <br><br>
+
+    <div style="text-align: center;">
+        <input type="button" value="Understood & Next" id="button_start">
+    </div>
 </div>

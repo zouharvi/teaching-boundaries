@@ -32,13 +32,6 @@ a {
     font-weight: bold;
 }
 
-#button_next {
-    width: 145px;
-    height: 40px;
-    display: inline-block;
-    vertical-align: top;
-}
-
 body {
     text-align: center;
     margin-bottom: 20px;
@@ -70,7 +63,7 @@ body {
 }
 
 /* button default */
-input[type="button"] {
+input[type="button"], .button_like {
     background-color: #d7dadd;
     border: none;
     border-radius: 6px;
@@ -83,7 +76,7 @@ input[type="button"] {
     padding: 6px 16px;
     vertical-align: middle;
     cursor: pointer;
-    
+    text-decoration: none;
 }
 
 input[type="button"]:hover:not(:disabled) {
