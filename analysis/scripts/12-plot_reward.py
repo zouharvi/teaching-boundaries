@@ -22,8 +22,10 @@ plt.figure(figsize=(4, 2))
 
 def plot_trajectory(data, name, color):
     data_local = collections.defaultdict(list)
+    accuracy_acc = []
     for line in data:
         data_local[line["data_i"]].append(line["reward"])
+        accuracy_acc.append(line["question"]["correct"] == line["response"])
     data_local = [(k, np.average(v)) for k,v in data_local.items()]
     data_local.sort(key=lambda x: x[0])
     plt.plot(
@@ -33,6 +35,13 @@ def plot_trajectory(data, name, color):
         color=color,
         linewidth=4,
         zorder=10,
+    )
+
+    plt.text(
+        len(data_local)-0.5, data_local[-1][1],
+        ha="left", va="center",
+        s=f"{np.average(accuracy_acc):.0%}",
+        color=color
     )
 
     # plot individual users
@@ -50,13 +59,15 @@ def plot_trajectory(data, name, color):
             zorder=5,
         )
 
-
 plot_trajectory(data_linear, "Linear", color="#190")
-plot_trajectory(data_random, "Random", color="#910")
+plot_trajectory(data_random, "Balanced random", color="#910")
 plt.vlines(
     x=10, ymin=0, ymax=plt.ylim()[1]/2,
     color="black"
 )
+
+ax = plt.gca()
+ax.spines[["top", "right"]].set_visible(False)
 
 plt.legend(frameon=False)
 plt.ylabel("Reward (p)")
