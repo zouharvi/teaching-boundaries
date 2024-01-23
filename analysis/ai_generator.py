@@ -1,6 +1,6 @@
 import copy
 import random
-
+from analysis import utils
 
 class Feature():
     decision = None
@@ -134,3 +134,35 @@ class LogisticRegression():
             ),
             ">=", self.acceptance_threshold
         )
+
+class Manual():
+    def __init__(self, ai):
+        if ai == "domain_biology":
+            self.f = lambda x: x["domain"] == "biology"
+        elif ai == "length_short":
+            self.f = lambda x: x["length_answer"] == "short"
+
+    def __call__(self, x: dict) -> bool:
+        return self.f(x)
+
+
+def get_model(ai_model, tags, seed):
+    if ai_model == "aidr":
+        return Tree.generate_random(
+            5,
+            features=[
+                f for f in FEATURES
+                if f.name in utils.TAGS_CONFIGURATIONS[tags]
+            ],
+            random_state=random.Random(seed)
+        )
+    elif ai_model == "ailr":
+        return LogisticRegression(
+            features=[
+                f for f in FEATURES
+                if f.name in utils.TAGS_CONFIGURATIONS[tags]
+            ],
+            random_state=random.Random(seed)
+        )
+    elif ai_model.startswith("manual_"):
+        return Manual(ai_model.removeprefix("manual_"))

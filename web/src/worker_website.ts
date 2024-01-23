@@ -61,12 +61,12 @@ async function show_evaluation(response: Boolean) {
     let text_incorrect = "<span class='span_incorrect'>incorrect</span>"
     let message = ""
     if (!globalThis.data_now["reveal"]) {
-        message = `You answered that the AI was ${response ? text_correct : text_incorrect}.<br>Please continue paying attention.`
+        message = `You answered that the AI was ${response ? text_correct : text_incorrect}.`
     } else {
         if (response == correct) {
-            message = `You answered that the AI was ${response ? text_correct : text_incorrect} and the AI was in fact ${correct ? text_correct : text_incorrect}`
+            message = `You answered that the AI was ${response ? text_correct : text_incorrect} and the AI was in fact ${correct ? text_correct : text_incorrect},`
         } else {
-            message = `You answered that the AI was ${response ? text_correct : text_incorrect} but the AI was in fact ${correct ? text_correct : text_incorrect}`
+            message = `You answered that the AI was ${response ? text_correct : text_incorrect} but the AI was in fact ${correct ? text_correct : text_incorrect}.`
         }
     }
 
@@ -85,7 +85,11 @@ async function show_evaluation(response: Boolean) {
 
     globalThis.reward = Math.max(0, globalThis.reward + gain)
 
-    $("#text_score").html(`Reward: 1$+${globalThis.reward}p (bonus)&nbsp;&nbsp;&nbsp;Progress: ${globalThis.data_i + 1}/${globalThis.data.length}`)
+    if (globalThis.data_now["reveal"]) {
+        $("#text_score").html(`Reward: 1$+${globalThis.reward}p (bonus)&nbsp;&nbsp;&nbsp;Progress: ${globalThis.data_i + 1}/${globalThis.data.length}`)
+    } else {
+        $("#text_score").html(`Reward: 1$+[hidden]p (bonus)&nbsp;&nbsp;Progress: ${globalThis.data_i + 1}/${globalThis.data.length}`)
+    }
 
     await timer(1000)
     $("#button_ok").on("click", () => {

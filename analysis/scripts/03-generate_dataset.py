@@ -3,6 +3,7 @@ import json
 import random
 from analysis import ai_generator, utils, user_models
 import argparse
+import numpy as np
 
 args = argparse.ArgumentParser()
 args.add_argument("--model", default="tree_simple")
@@ -13,23 +14,7 @@ args.add_argument("--size-test", type=int, default=20)
 args.add_argument("--seed", type=int, default=0)
 args = args.parse_args()
 
-if args.ai_model == "aidr":
-    fake_ai = ai_generator.Tree.generate_random(
-        5,
-        features=[
-            f for f in ai_generator.FEATURES
-            if f.name in utils.TAGS_CONFIGURATIONS[args.tags]
-        ],
-        random_state=random.Random(args.seed)
-    )
-elif args.ai_model == "ailr":
-    fake_ai = ai_generator.LogisticRegression(
-        features=[
-            f for f in ai_generator.FEATURES
-            if f.name in utils.TAGS_CONFIGURATIONS[args.tags]
-        ],
-        random_state=random.Random(args.seed)
-    )
+fake_ai = ai_generator.get_model(args.ai_model, args.tags, args.seed)
 fake_ai.print()
 
 # load dataset and add manually confidence
@@ -55,6 +40,9 @@ training_questions = user_models.MODELS[args.model](
     training_questions_pool, k=args.size_train
 )
 
+
+print(f"MCC accuracy: {max(1-np.average(data_y), np.average(data_y)):.1%}")
+
 # output queue
 os.makedirs("computed/queues", exist_ok=True)
 
@@ -72,7 +60,7 @@ for question, correct in test_questions:
         "answer": question["answer"],
         "mode": "base_tags",
         "tags": utils.configuration_to_tags(question["configuration"], utils.TAGS_CONFIGURATIONS[args.tags]),
-        "reveal": True, # reveal even in test
+        "reveal": False,
         "correct": correct,
     })
 with open(f"computed/queues/{args.ai_model}_{args.model}_t{args.tags}_{args.size_train}n{args.size_test}_s{args.seed}.jsonl", "w") as f:
