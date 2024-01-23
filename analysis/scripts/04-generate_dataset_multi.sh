@@ -11,3 +11,6 @@
 
 python3 analysis/scripts/03-generate_dataset.py --ai-model ailr --size-train 8 --size-test 15 --model random --tags "domain" --seed 0
 python3 analysis/scripts/03-generate_dataset.py --ai-model ailr --size-train 8 --size-test 15 --model random --tags "length_answer" --seed 0
+
+python3 analysis/scripts/03-generate_dataset.py --ai-model ailr --size-train 10 --size-test 15 --model linear_simple --tags "2" --seed 0
+python3 analysis/scripts/03-generate_dataset.py --ai-model ailr --size-train 10 --size-test 15 --model random --tags "2" --seed 0

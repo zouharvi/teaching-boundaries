@@ -1,8 +1,18 @@
 import json
 import numpy as np
 import collections
+import argparse
+import glob
 
-data = [json.loads(x) for x in open("computed/collected/ailr_linear_simple_tdomain_10n20_s0.jsonl", "r")]
+args = argparse.ArgumentParser()
+args.add_argument("files")
+args = args.parse_args()
+
+data = [
+    json.loads(x)
+    for f in glob.glob(args.files)
+    for x in open(f, "r")
+]
 data_user = collections.defaultdict(list)
 
 for line in data:
@@ -10,7 +20,6 @@ for line in data:
     if not user or len(user) <= 3 or "%" in user:
         continue
     data_user[user].append(line)
-
 
 def accuracy(data):
     avg = np.average([
@@ -41,22 +50,23 @@ CUTOFF = 10
 
 data_agg = []
 for data_local in data_user.values():
-    # skip unfinished
-    if len(data_local) < 20:
+    # skip unfinished user runs
+    if len(data_local) < 10:
         continue
 
     data_agg.append({
-        "train_acc": accuracy(data[:CUTOFF]),
-        "test_acc": accuracy(data[CUTOFF:]),
-        "train_time": time(data[:CUTOFF]),
-        "test_time": time(data[CUTOFF:]),
-        "test_mccacc": mcc_accuracy(data[CUTOFF:]),
+        "train_acc": accuracy(data_local[:CUTOFF]),
+        "test_acc": accuracy(data_local[CUTOFF:]),
+        "train_time": time(data_local[:CUTOFF]),
+        "test_time": time(data_local[CUTOFF:]),
+        "test_mccacc": mcc_accuracy(data_local[CUTOFF:]),
     })
 
 def agg_average(key):
     data = [x[key] for x in data_agg if all(x.values())]
     return np.average(data)
 
+print(f"Users: {len([x for x in data_agg if all(x.values())])}")
 print(f"Train: ACC={agg_average('train_acc'):>7.2%} TIME={agg_average('train_time'):>4.1f}s/sample")
 print(f"Test:  ACC={agg_average('test_acc'):>7.2%} TIME={agg_average('test_time'):>4.1f}s/sample")
 print(f"Test:  MCCACC={agg_average('test_mccacc'):>7.2%}")

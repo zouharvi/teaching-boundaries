@@ -29,8 +29,9 @@ def _sklearn_model(data_xy, k, Model):
             for x, y in data_xy
         ]
 
-        model.fit(            data_x_binary, data_y        )
+        model.fit(data_x_binary, data_y)
         data_y_pred = model.predict(data_x_binary_all)
+        # maximize score across the whole dataset, not just test
         score = accuracy_score([y for x, y in data_xy], data_y_pred)
         scores_datasets.append((score, data_subset))
         print(f"{score:.2%}")
@@ -68,9 +69,26 @@ def logistic_regression_simple(data_xy, k: int):
     # return best subset
     return best[1]
 
+def anti_logistic_regression_simple(data_xy, k: int):
+    from sklearn.linear_model import LogisticRegression
+    
+    scores_datasets = _sklearn_model(data_xy, k, LogisticRegression)
+    best = min(scores_datasets, key=lambda x: x[0])
+    print(f"Best: {best[0]:.2%}")
 
-def random_subset(data_xy, k: int):
+    # return best subset
+    return best[1]
+
+
+def imbalanced_random_subset(data_xy, k: int):
     return random.sample(data_xy, k=k)
+
+def balanced_random_subset(data_xy, k: int):
+    positive_count = int(k*sum([y for x, y in data_xy])/len(data_xy))
+    data = random.sample([(x,y) for x,y in data_xy if y], k=positive_count)
+    data += random.sample([(x,y) for x,y in data_xy if not y], k=k-positive_count)
+    random.shuffle(data)
+    return data
 
 
 def knn_simple(data_xy, k: int):
@@ -121,10 +139,12 @@ def knn_decay(data_xy, k: int):
     return best[1]
 
 MODELS = {
-    "random": random_subset,
+    "imbalanced_random": imbalanced_random_subset,
+    "random": balanced_random_subset,
     "tree_simple": tree_simple,
     "anti_tree_simple": anti_tree_simple,
     "linear_simple": logistic_regression_simple,
+    "anti_linear_simple": anti_logistic_regression_simple,
     "knn_simple": knn_simple,
     "knn_decay": knn_decay,
 }

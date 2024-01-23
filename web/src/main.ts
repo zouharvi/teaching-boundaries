@@ -1,7 +1,7 @@
 import { DEVMODE } from "./globals"
 export var UID: string
 import { load_data } from './connector'
-import { setup_intro_information_1 } from "./worker_website"
+import { setup_intro_information_1, setup_main_question } from "./worker_website"
 import { range } from "./utils";
 
 globalThis.data = null
@@ -10,7 +10,8 @@ globalThis.reward = 0
 const urlParams = new URLSearchParams(window.location.search);
 globalThis.uid = urlParams.get('uid')
 globalThis.data_i = Number.parseInt(urlParams.get('data_i')) || 0
-console.log(globalThis.data_i)
+globalThis.skip_intro = urlParams.has('skip_intro')
+console.log(globalThis.skip_intro)
 
 function prolific_rewrite_uid(uid) {
     if (uid != "prolific_pilot_1") {
@@ -58,7 +59,11 @@ async function get_uid_and_data() {
         await load_data().then((data: any) => {
             globalThis.data = data
             globalThis.data_now = globalThis.data[globalThis.data_i];
-            setup_intro_information_1()
+            if (globalThis.skip_intro) {
+                setup_main_question()
+            } else {
+                setup_intro_information_1()
+            }
         }).catch((reason: any) => {
             console.error(reason)
             alert("Invalid UID " + globalThis.uid);

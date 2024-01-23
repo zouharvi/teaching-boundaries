@@ -1,7 +1,7 @@
 TAGS_CONFIGURATIONS = {
-    "all": {"domain", "length_question", "length_answer", "entity", "confidence"},
-    "3": {"domain", "length_question", "confidence"},
-    "2": {"domain", "length_question"},
+    "all": {"domain", "length_answer", "entity", "confidence"},
+    "3": {"domain", "length_answer", "confidence"},
+    "2": {"domain", "length_answer"},
     "domain": {"domain"},
     "length_answer": {"length_answer"},
 }
@@ -12,7 +12,6 @@ def configuration_to_tags(configuration, allowed_tags=TAGS_CONFIGURATIONS["all"]
 
     configuration = {
         "domain": "is about " + highlight(configuration["domain"]),
-        # "length_question": "short question" if configuration["length_question"] == "short" else "long question",
         "length_answer": "is " + highlight(configuration["length_answer"]),
         "entity": "is about" + highlight(configuration["entity"]),
         "confidence": configuration["confidence"].replace("low", highlight("low")).replace("high", highlight("high")),

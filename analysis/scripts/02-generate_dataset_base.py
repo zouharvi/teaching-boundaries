@@ -59,6 +59,12 @@ for domain, entity, length_answer in tqdm.tqdm(itertools.product(DOMAINS.items()
                     "entity": entity[0],
                     "length_answer": length_answer[0],
                 }
+
+                if len(content["answer"].split()) <= 10 and length_answer[0] == "long":
+                    raise Exception("Length mismatch")
+                elif len(content["answer"].split()) >= 20 and length_answer[0] == "short":
+                    raise Exception("Length mismatch")
+
                 fout.write(json.dumps(content, ensure_ascii=False)+"\n")
                 break
             except Exception as e:
