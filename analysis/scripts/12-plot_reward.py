@@ -25,7 +25,9 @@ def plot_trajectory(data, name, color):
     accuracy_acc = []
     for line in data:
         data_local[line["data_i"]].append(line["reward"])
-        accuracy_acc.append(line["question"]["correct"] == line["response"])
+        # add only test for accuracy computation
+        if line["data_i"] >= 10:
+            accuracy_acc.append(line["question"]["correct"] == line["response"])
     data_local = [(k, np.average(v)) for k,v in data_local.items()]
     data_local.sort(key=lambda x: x[0])
     plt.plot(
@@ -43,6 +45,7 @@ def plot_trajectory(data, name, color):
         s=f"{np.average(accuracy_acc):.0%}",
         color=color
     )
+    print(name, f"{np.average(accuracy_acc):.1%}")
 
     # plot individual users
     data_local = collections.defaultdict(list)
