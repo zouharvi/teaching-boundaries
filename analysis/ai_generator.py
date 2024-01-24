@@ -19,9 +19,8 @@ class Feature():
 
 FEATURES = [
     Feature(name="domain", options=["history", "biology"]),
-    # Feature(name="length_question", options=["short", "long"]),
     Feature(name="length_answer", options=["short", "long"]),
-    Feature(name="entity", options=["person", "number", "explanation"]),
+    Feature(name="entity", options=["a person", "a number", "an explanation"]),
     Feature(
         name="confidence", options=["low AI confidence", "high AI confidence"]
     ),

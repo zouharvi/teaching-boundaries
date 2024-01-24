@@ -1,6 +1,6 @@
 TAGS_CONFIGURATIONS = {
     "all": {"domain", "length_answer", "entity", "confidence"},
-    "3": {"domain", "length_answer", "confidence"},
+    "3": {"domain", "length_answer", "entity"},
     "2": {"domain", "length_answer"},
     "domain": {"domain"},
     "length_answer": {"length_answer"},
@@ -13,7 +13,7 @@ def configuration_to_tags(configuration, allowed_tags=TAGS_CONFIGURATIONS["all"]
     configuration = {
         "domain": "is about " + highlight(configuration["domain"]),
         "length_answer": "is " + highlight(configuration["length_answer"]),
-        "entity": "is about" + highlight(configuration["entity"]),
+        "entity": "contains " + highlight(configuration["entity"]),
         "confidence": configuration["confidence"].replace("low", highlight("low")).replace("high", highlight("high")),
     }
     configuration = [
