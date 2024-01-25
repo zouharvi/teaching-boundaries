@@ -49,10 +49,16 @@ def plot_trajectory(data, name, color):
         data_local[line["user"]["prolific_pid"]].append(line)
     data_local = list(data_local.values())
     for data_local_user in data_local:
-        data_local_user.sort(key=lambda x: x["data_i"])
+        # solution to multiple runs?
+        data_local_user_multi = collections.defaultdict(list)
+        for line in data_local_user:
+            data_local_user_multi[line["data_i"]].append(line)
+
+        data_local_user_multi = [(k,np.average([x["reward"] for x in v])) for k,v in data_local_user_multi.items()]
+        data_local_user_multi.sort(key=lambda x: x[0])
         plt.plot(
-            [x["data_i"] for x in data_local_user],
-            [x["reward"] for x in data_local_user],
+            [x[0] for x in data_local_user_multi],
+            [x[1] for x in data_local_user_multi],
             color=color, alpha=0.3,
             linewidth=1,
             zorder=5,
