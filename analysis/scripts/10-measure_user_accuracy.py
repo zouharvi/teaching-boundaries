@@ -1,25 +1,22 @@
 import json
 import numpy as np
-import collections
+import re
 import argparse
 import glob
+import analysis.utils
 
 args = argparse.ArgumentParser()
-args.add_argument("files")
+args.add_argument("-u", "--uid", default="*")
 args = args.parse_args()
+CUTOFF = 10
 
-data = [
-    json.loads(x)
-    for f in glob.glob(args.files)
-    for x in open(f, "r")
-]
-data_user = collections.defaultdict(list)
+RE_UID = re.compile(args.uid)
 
-for line in data:
-    user = line["user"]["prolific_pid"]
-    if not user or len(user) <= 3 or "%" in user:
-        continue
-    data_user[user].append(line)
+data_user = {
+    user:data
+    for user, data in analysis.utils.data_to_users("computed/collected.jsonl", flat=False, cutoff=CUTOFF).items()
+    if RE_UID.match(data[0]["uid"])
+}
 
 def accuracy(data):
     avg = np.average([
@@ -46,7 +43,6 @@ def mcc_accuracy(data):
     ])
     return max(val, 1-val)
 
-CUTOFF = 10
 
 data_agg = []
 for data_local in data_user.values():

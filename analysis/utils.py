@@ -33,3 +33,31 @@ def add_fake_ai_confidence(data_x):
             ["low AI confidence", "high AI confidence"]
         )
     return data_x
+
+def data_to_users(fname, flat=False, cutoff=10) -> dict:
+    import collections
+    import json
+    import numpy as np
+    data_user = collections.defaultdict(list)
+
+    data =[
+        json.loads(x)
+        for x in open(fname, "r")
+    ]
+
+    for line in data:
+        user = line["user"]["prolific_pid"]
+        if not user or len(user) <= 3 or "%" in user:
+            continue
+        data_user[user].append(line)
+
+    for user, data_local in list(data_user.items()):
+        data_train = data_local[:cutoff]
+        acc_train = np.average([line["response"] == line["question"]["correct"] for line in data_train])
+        if acc_train >= 0.9:
+            data_user.pop(user)
+
+    if flat:
+        return [v for l in data_user.values() for v in l]
+    else:
+        return dict(data_user)

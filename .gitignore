@@ -1,4 +1,5 @@
 secret.*
+analysis/scripts/00-fetch_data.sh
 
 __pycache__
 .vscode

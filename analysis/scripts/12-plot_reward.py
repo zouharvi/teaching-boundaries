@@ -3,20 +3,16 @@ import numpy as np
 import collections
 import argparse
 import matplotlib.pyplot as plt
+import analysis.utils
 
 args = argparse.ArgumentParser()
-args.add_argument("--data-linear", default="computed/collected/ailr_linear_simple_t2_10n15_s0.jsonl")
-args.add_argument("--data-random", default="computed/collected/ailr_random_t2_10n15_s0.jsonl")
+args.add_argument("--uid-linear", default="ailr_linear_simple_t3_10n15_s0")
+args.add_argument("--uid-random", default="ailr_random_t3_10n15_s0")
 args = args.parse_args()
 
-data_linear = [
-    json.loads(x)
-    for x in open(args.data_linear, "r")
-]
-data_random = [
-    json.loads(x)
-    for x in open(args.data_random, "r")
-]
+data_all = analysis.utils.data_to_users("computed/collected.jsonl", flat=True)
+data_linear = [line for line in data_all if line["uid"] == args.uid_linear]
+data_random = [line for line in data_all if line["uid"] == args.uid_random]
 
 plt.figure(figsize=(4, 2))
 

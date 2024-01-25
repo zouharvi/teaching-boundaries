@@ -63,5 +63,5 @@ for question, correct in test_questions:
         "reveal": False,
         "correct": correct,
     })
-with open(f"computed/queues/{args.ai_model}_{args.model}_t{args.tags}_{args.size_train}n{args.size_test}_s{args.seed}.jsonl", "w") as f:
+with open(f"web/web/queues/{args.ai_model}_{args.model}_t{args.tags}_{args.size_train}n{args.size_test}_s{args.seed}.jsonl", "w") as f:
     f.write("\n".join(json.dumps(x, ensure_ascii=False) for x in queue))
