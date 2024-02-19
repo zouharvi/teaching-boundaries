@@ -10,28 +10,12 @@ export async function setup_intro_information_1() {
     main_text_area.html(await get_html("instructions_1.html"))
     await timer(10)
     $("#button_start").on("click", setup_intro_information_2)
-    $("#show_on_next").toggle(false)
-    $("#button_next").on("click", (event) => {
-        $("#show_on_next").toggle(true);
-        $(event.target).remove();
-    })
 }
 
 export async function setup_intro_information_2() {
     main_text_area.html(await get_html("instructions_2.html"))
     await timer(10)
     $("#button_start").on("click", setup_intro_information_3)
-    $("#show_on_next_bad").toggle(false)
-    $("#show_on_next_good").toggle(false)
-
-    $("#button_no").on("click", (event) => {
-        $("#show_on_next_good").toggle(true);
-        $("#button_yes,#button_no").remove()
-    })
-    $("#button_yes").on("click", (event) => {
-        $("#show_on_next_bad").toggle(true);
-        $("#button_yes,#button_no").remove()
-    })
 }
 
 export async function setup_intro_information_3() {

@@ -1,0 +1,121 @@
+* {
+    font-family: Roboto, Arial, Helvetica, sans-serif;
+}
+
+#main_text_area, #short_instructions {
+    vertical-align: top;
+    margin-top: 30px;
+    border: 2px solid black;
+    padding: 20px;
+    background-color: #fff;
+    display: inline-block;
+
+    width: 1000px;
+    height: 600px;
+    font-size: 1.1em;
+    text-align: justify;
+    position: relative;
+}
+
+#short_instructions {
+    height: 200px;
+    width: 1000px;
+    overflow-y: scroll;
+    margin-top: -200px;
+    font-size: 10pt;
+}
+
+#short_instructions .tag_span {
+    padding: 2px !important;
+}
+
+#short_instructions h3 {
+    margin-top: -15px;
+    margin-bottom: -5px;
+}
+
+
+.paragraph_blurbox {
+    width: calc(100% + 10px);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    position: absolute;
+    top: 0;
+    height: 250px;
+    margin-left: -10px;
+}
+
+a {
+    color: black;
+    font-weight: bold;
+}
+
+body {
+    text-align: center;
+    margin-bottom: 20px;
+    background-color: #bdbdd0;
+}
+
+.tag_span {
+    background-color: #d9ddae;
+    font-size: 14px;
+    border: none;
+    border-radius: 3px;
+    padding: 6px;
+    user-select: none;
+}
+
+.span_correct {
+    display: inline-block;
+    padding: 2px;
+    border-radius: 3px;
+    background-color: #353;
+    color: white;
+}
+
+.span_incorrect {
+    display: inline-block;
+    padding: 2px;
+    border-radius: 3px;
+    background-color: #533;
+    color: white;
+}
+
+/* button default */
+input[type="button"], .button_like {
+    background-color: #d7dadd;
+    border: none;
+    border-radius: 3px;
+    box-sizing: border-box;
+    color: #24292E;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 900;
+    line-height: 20px;
+    padding: 6px 16px;
+    vertical-align: middle;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+input[type="button"]:hover:not(:disabled) {
+    background-color: #ccc;
+}
+
+input[type="button"]:active {
+    background-color: #ddd;
+}
+
+input[type="button"]:disabled {
+    background-color: #bbb;
+    color: #4e535a;
+    cursor: not-allowed;
+}
+
+#button_yes:not(:disabled) {
+    background-color: #cec;
+}
+
+#button_no:not(:disabled) {
+    background-color: #ecc;
+}
